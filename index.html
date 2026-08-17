@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta property="og:title" content="👩‍💻 CLARA - Entrenadora de preguntas del jurado" />
-<meta property="og:description" content="Practica con CLARA y asegura una sustentación exitosa" />
-<meta property="og:image" content="https://clara.sustentacionexitosa.com/portada.png" />
-<meta property="og:url" content="https://clara.sustentacionexitosa.com" />
-<meta property="og:type" content="website" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CLARA - Entrenadora de Preguntas del Jurado | Eureka</title>
@@ -860,7 +855,7 @@
             "pregunta": "¿Qué criterios utilizaste para seleccionar el contenido de cada capítulo?",
             "queEvalua": "Que cada parte de tu tesis está ahí por una razón, no por relleno.",
             "pasos": [
-              "Menciona criterios como relevancia, relación con los objetivos, continuidad lógica.",
+              "Menciona criterios como relevancia, relación con los objetivos, continuity lógica.",
               "Explica cómo estos criterios contribuyen a la cohesión del trabajo."
             ],
             "plantilla": "Seleccioné el contenido de cada capítulo basándome en [menciona criterios como relevancia, relación con los objetivos, continuidad lógica]. Esto asegura que [explica cómo estos criterios contribuyen a la cohesión del trabajo].",
@@ -1394,7 +1389,7 @@
             const [questions, setQuestions] = useState(initialQuestions);
             const [selectedCategory, setSelectedCategory] = useState('Todas');
             const [currentIndex, setCurrentIndex] = useState(0);
-            const [understood, setUnderstood] = useState(new Set()); // Reemplaza "mastered"
+            const [understood, setUnderstood] = useState(new Set()); 
             const [isRevealed, setIsRevealed] = useState(false);
             const [studyList, setStudyList] = useState([]); // Lista aleatoria para el modo estudio
             
@@ -1415,8 +1410,8 @@
                 ? questions 
                 : questions.filter(q => q.categoria === selectedCategory);
 
-            // Lista actual activa (aleatoria para estudio, filtrada para simulacro)
-            const currentList = mode === 'study' && studyList.length > 0 ? studyList : filteredQuestions;
+            // Lista actual activa (aleatoria para estudio y simulacro)
+            const currentList = (mode === 'study' || mode === 'simulacro') && studyList.length > 0 ? studyList : filteredQuestions;
             const currentQuestion = currentList[currentIndex] || null;
 
             // Timer Effect (Simulacro)
@@ -1427,7 +1422,6 @@
                         setTimeLeft(prev => prev - 1);
                     }, 1000);
                 } else if (timeLeft === 0 && simulacroStage === 'answering') {
-                    // Auto-submit si se acaba el tiempo
                     handleSimulacroSubmit();
                 }
                 return () => clearInterval(interval);
@@ -1448,7 +1442,7 @@
                 setCurrentIndex(0);
                 setIsRevealed(false);
                 
-                if (newMode === 'study') {
+                if (newMode === 'study' || newMode === 'simulacro') {
                     setStudyList(shuffleArray(questions));
                 }
                 
@@ -1562,7 +1556,6 @@
             };
 
             const handleNextSimulacro = () => {
-                // Guardar puntaje de la pregunta actual
                 const score = currentQuestion.pasos.length > 0 ? Math.round((checkedSteps.size / currentQuestion.pasos.length) * 100) : 100;
                 setSimulacroScores(prev => [...prev, score]);
 
@@ -1577,33 +1570,33 @@
             // --- VISTAS ---
 
             const renderHome = () => (
-                <div className="flex flex-col items-center text-center p-6 space-y-8 animate-in fade-in duration-500 mt-8">
-                    <div className="w-20 h-20 bg-teal rounded-full flex items-center justify-center shadow-soft mb-2">
+                <div className="flex flex-col items-center text-center p-6 space-y-8 animate-in fade-in duration-500 mt-8 break-words">
+                    <div className="w-20 h-20 bg-teal rounded-full flex items-center justify-center shadow-soft mb-2 flex-shrink-0">
                         <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0v7"></path>
                         </svg>
                     </div>
-                    <h1 className="text-5xl font-fredoka text-navy tracking-tight">CLARA</h1>
-                    <h2 className="text-xl font-quicksand font-semibold text-teal -mt-6">Entrenadora de Preguntas del Jurado</h2>
+                    <h1 className="text-4xl sm:text-5xl font-fredoka text-navy tracking-tight">CLARA</h1>
+                    <h2 className="text-lg sm:text-xl font-quicksand font-semibold text-teal -mt-6">Entrenadora de Preguntas del Jurado</h2>
                     
                     <div className="bg-white p-6 rounded-3xl shadow-soft w-full border border-teal/10 relative">
-                        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gold text-white font-bold px-4 py-1 rounded-full text-sm font-fredoka shadow-md whitespace-nowrap">
+                        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gold text-white font-bold px-4 py-1 rounded-full text-sm font-fredoka shadow-md whitespace-nowrap min-h-[32px] flex items-center">
                             ¡Hola, soy Clara! 👋
                         </div>
-                        <p className="text-navy font-quicksand text-lg leading-relaxed mt-4">
+                        <p className="text-navy font-quicksand text-base sm:text-lg leading-relaxed mt-4">
                             Has llegado hasta aquí con mucho esfuerzo. Ahora, vamos a asegurarnos de que ninguna pregunta te tome por sorpresa. <span className="font-bold text-teal">Asegura una sustentación exitosa.</span>
                             <br/><br/><strong>¿Cómo quieres prepararte hoy?</strong>
                         </p>
                     </div>
 
                     <div className="w-full space-y-4">
-                        <button onClick={() => handleStartMode('study')} className="w-full bg-teal text-white font-fredoka text-xl py-4 rounded-2xl shadow-soft hover:bg-teal/90 transition-smooth transform hover:-translate-y-1 flex items-center justify-center gap-3">
-                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                        <button onClick={() => handleStartMode('study')} className="w-full min-h-[44px] bg-teal text-white font-fredoka text-xl py-4 rounded-2xl shadow-soft hover:bg-teal/90 transition-smooth transform hover:-translate-y-1 flex items-center justify-center gap-3">
+                            <svg className="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
                             Modo Estudio
                         </button>
-                        <button onClick={() => handleStartMode('simulacro')} className="w-full bg-navy text-white font-fredoka text-xl py-4 rounded-2xl shadow-soft hover:bg-navy/90 transition-smooth transform hover:-translate-y-1 flex items-center justify-center gap-3">
-                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <button onClick={() => handleStartMode('simulacro')} className="w-full min-h-[44px] bg-navy text-white font-fredoka text-xl py-4 rounded-2xl shadow-soft hover:bg-navy/90 transition-smooth transform hover:-translate-y-1 flex items-center justify-center gap-3">
+                            <svg className="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             Modo Simulacro
                         </button>
                     </div>
@@ -1612,39 +1605,39 @@
 
             // Contenido central del MODO ESTUDIO
             const renderStudyCardContent = (q) => (
-                <div className={`mt-6 space-y-5 overflow-hidden transition-smooth ${isRevealed ? 'opacity-100 max-h-[1500px]' : 'opacity-0 max-h-0'}`}>
+                <div className={`mt-6 space-y-5 overflow-y-auto hide-scrollbar transition-smooth break-words ${isRevealed ? 'opacity-100 max-h-[2500px]' : 'opacity-0 max-h-0'}`}>
                     <div className="bg-cream/50 p-4 rounded-2xl border border-teal/20">
-                        <h4 className="font-fredoka text-teal flex items-center gap-2 mb-2"><span className="text-xl">🎯</span> ¿Qué evalúa el jurado?</h4>
+                        <h4 className="font-fredoka text-teal flex items-center gap-2 mb-2"><span className="text-xl flex-shrink-0">🎯</span> ¿Qué evalúa el jurado?</h4>
                         <p className="font-quicksand text-navy text-sm leading-relaxed">{q.queEvalua}</p>
                     </div>
                     <div className="bg-cream/50 p-4 rounded-2xl border border-teal/20">
-                        <h4 className="font-fredoka text-teal flex items-center gap-2 mb-2"><span className="text-xl">🧭</span> Pasos para responder</h4>
+                        <h4 className="font-fredoka text-teal flex items-center gap-2 mb-2"><span className="text-xl flex-shrink-0">🧭</span> Pasos para responder</h4>
                         <ul className="font-quicksand text-navy text-sm space-y-2">
                             {q.pasos.map((paso, idx) => (
-                                <li key={idx} className="flex gap-2"><span className="text-gold font-bold">{idx+1}.</span> <span className="leading-relaxed">{paso}</span></li>
+                                <li key={idx} className="flex items-start gap-2"><span className="text-gold font-bold flex-shrink-0">{idx+1}.</span> <span className="leading-relaxed">{paso}</span></li>
                             ))}
                         </ul>
                     </div>
                     <div className="bg-teal/10 p-4 rounded-2xl border border-teal/30">
-                        <h4 className="font-fredoka text-teal flex items-center gap-2 mb-2"><span className="text-xl">📝</span> Plantilla SESE</h4>
+                        <h4 className="font-fredoka text-teal flex items-center gap-2 mb-2"><span className="text-xl flex-shrink-0">📝</span> Plantilla SESE</h4>
                         <p className="font-quicksand text-navy text-sm italic leading-relaxed">"{q.plantilla}"</p>
                     </div>
                     <div className="bg-gold/10 p-4 rounded-2xl border border-gold/30">
-                        <h4 className="font-fredoka text-navy flex items-center gap-2 mb-2"><span className="text-xl">💡</span> Ejemplo real</h4>
+                        <h4 className="font-fredoka text-navy flex items-center gap-2 mb-2"><span className="text-xl flex-shrink-0">💡</span> Ejemplo real</h4>
                         <p className="font-quicksand text-navy text-sm leading-relaxed">"{q.ejemplo}"</p>
                     </div>
                     <div className="bg-red-50 p-4 rounded-2xl border border-red-200">
-                        <h4 className="font-fredoka text-red-600 flex items-center gap-2 mb-2"><span className="text-xl">⚠️</span> Error común a evitar</h4>
+                        <h4 className="font-fredoka text-red-600 flex items-center gap-2 mb-2"><span className="text-xl flex-shrink-0">⚠️</span> Error común a evitar</h4>
                         <p className="font-quicksand text-red-800 text-sm leading-relaxed">{q.errorComun}</p>
                     </div>
                 </div>
             );
 
             const renderStudyMode = () => (
-                <div className="flex flex-col h-full animate-in fade-in duration-300">
-                    <div className="p-4 flex-grow flex flex-col pt-6">
+                <div className="flex flex-col min-h-full animate-in fade-in duration-300">
+                    <div className="p-4 flex-grow flex flex-col pt-6 pb-6">
                         {currentQuestion ? (
-                            <div className="bg-white rounded-3xl p-6 shadow-soft flex-grow mb-6 relative border border-teal/5">
+                            <div className="bg-white rounded-3xl p-6 shadow-soft flex-grow mb-6 relative border border-teal/5 break-words">
                                 <span className="inline-block bg-teal/10 text-teal font-fredoka text-xs px-3 py-1 rounded-full mb-4 uppercase tracking-wider">
                                     {currentQuestion.categoria}
                                 </span>
@@ -1653,35 +1646,35 @@
                                 </h3>
 
                                 {!isRevealed && (
-                                    <button onClick={() => setIsRevealed(true)} className="w-full bg-cream text-teal font-fredoka py-4 text-lg rounded-xl border-2 border-teal border-dashed hover:bg-teal/10 transition-smooth shadow-sm flex items-center justify-center gap-2">
+                                    <button onClick={() => setIsRevealed(true)} className="w-full min-h-[44px] bg-cream text-teal font-fredoka py-4 text-lg rounded-xl border-2 border-teal border-dashed hover:bg-teal/10 transition-smooth shadow-sm flex items-center justify-center gap-2">
                                         Revelar Análisis SESE
-                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                                        <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
                                     </button>
                                 )}
 
                                 {renderStudyCardContent(currentQuestion)}
                             </div>
                         ) : (
-                            <div className="flex-grow flex items-center justify-center text-navy font-quicksand p-6 text-center">
+                            <div className="flex-grow flex items-center justify-center text-navy font-quicksand p-6 text-center break-words">
                                 No hay preguntas en esta categoría actualmente.
                             </div>
                         )}
 
                         {/* Controls */}
                         {currentQuestion && (
-                            <div className="flex flex-col gap-4 mt-auto">
+                            <div className="flex flex-col gap-4 mt-auto pb-4">
                                 <button 
                                     onClick={() => toggleUnderstood(currentQuestion.id)}
-                                    className={`w-full py-4 rounded-2xl font-fredoka text-lg transition-smooth flex items-center justify-center gap-2 ${understood.has(currentQuestion.id) ? 'bg-gold text-white shadow-md' : 'bg-white text-navy border-2 border-gold/50 hover:bg-gold/10'}`}
+                                    className={`w-full min-h-[44px] py-4 rounded-2xl font-fredoka text-lg transition-smooth flex items-center justify-center gap-2 ${understood.has(currentQuestion.id) ? 'bg-gold text-white shadow-md' : 'bg-white text-navy border-2 border-gold/50 hover:bg-gold/10'}`}
                                 >
                                     {understood.has(currentQuestion.id) ? '✅ Pregunta Comprendida' : 'Marcar como comprendida'}
                                 </button>
                                 
                                 <div className="flex gap-4">
-                                    <button onClick={handlePrev} disabled={currentIndex === 0} className={`flex-1 py-3 rounded-2xl font-quicksand font-bold bg-white text-navy shadow-sm border border-teal/10 transition-smooth ${currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-cream'}`}>
+                                    <button onClick={handlePrev} disabled={currentIndex === 0} className={`flex-1 min-h-[44px] py-3 rounded-2xl font-quicksand font-bold bg-white text-navy shadow-sm border border-teal/10 transition-smooth ${currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-cream'}`}>
                                         Anterior
                                     </button>
-                                    <button onClick={handleNext} disabled={currentIndex === currentList.length - 1} className={`flex-1 py-3 rounded-2xl font-quicksand font-bold text-white shadow-md transition-smooth ${currentIndex === currentList.length - 1 ? 'bg-navy/50 cursor-not-allowed' : 'bg-navy hover:bg-navy/90'}`}>
+                                    <button onClick={handleNext} disabled={currentIndex === currentList.length - 1} className={`flex-1 min-h-[44px] py-3 rounded-2xl font-quicksand font-bold text-white shadow-md transition-smooth ${currentIndex === currentList.length - 1 ? 'bg-navy/50 cursor-not-allowed' : 'bg-navy hover:bg-navy/90'}`}>
                                         Siguiente
                                     </button>
                                 </div>
@@ -1701,26 +1694,26 @@
                 else if (score >= 50) scoreColor = 'text-yellow-700 bg-yellow-100 border-yellow-300';
 
                 return (
-                <div className="p-4 flex flex-col h-full animate-in fade-in duration-300">
+                <div className="p-4 flex flex-col min-h-full animate-in fade-in duration-300">
                     
                     {/* Timer y Controles */}
                     <div className="flex flex-col items-center justify-center mb-6">
-                        <div className={`w-32 h-32 rounded-full flex items-center justify-center border-4 shadow-soft bg-white transition-colors duration-300 ${timeLeft < 15 ? 'border-red-500 text-red-500' : 'border-teal text-navy'}`}>
+                        <div className={`w-32 h-32 rounded-full flex items-center justify-center border-4 shadow-soft bg-white transition-colors duration-300 flex-shrink-0 ${timeLeft < 15 ? 'border-red-500 text-red-500' : 'border-teal text-navy'}`}>
                             <span className="font-fredoka text-4xl">{timeLeft}s</span>
                         </div>
                         {simulacroStage === 'answering' && (
                             <div className="flex gap-4 mt-4">
-                                <button onClick={() => setIsTimerRunning(!isTimerRunning)} className="text-teal hover:text-navy transition-smooth px-4 py-2 bg-white rounded-full shadow-sm border border-teal/10 font-quicksand text-sm font-bold">
+                                <button onClick={() => setIsTimerRunning(!isTimerRunning)} className="min-h-[44px] text-teal hover:text-navy transition-smooth px-4 py-2 bg-white rounded-full shadow-sm border border-teal/10 font-quicksand text-sm font-bold flex items-center justify-center">
                                     {isTimerRunning ? '⏸️ Pausar' : '▶️ Reanudar'}
                                 </button>
-                                <button onClick={() => setTimeLeft(90)} className="text-teal hover:text-navy transition-smooth px-4 py-2 bg-white rounded-full shadow-sm border border-teal/10 font-quicksand text-sm font-bold">
+                                <button onClick={() => setTimeLeft(90)} className="min-h-[44px] text-teal hover:text-navy transition-smooth px-4 py-2 bg-white rounded-full shadow-sm border border-teal/10 font-quicksand text-sm font-bold flex items-center justify-center">
                                     🔄 Reiniciar
                                 </button>
                             </div>
                         )}
                     </div>
 
-                    <div className="bg-white rounded-3xl p-6 shadow-soft flex-grow mb-6 relative border border-teal/5">
+                    <div className="bg-white rounded-3xl p-6 shadow-soft flex-grow mb-6 relative border border-teal/5 break-words">
                         <span className="inline-block bg-teal/10 text-teal font-fredoka text-xs px-3 py-1 rounded-full mb-4 uppercase tracking-wider">
                             {currentQuestion.categoria}
                         </span>
@@ -1733,18 +1726,18 @@
                             <div className="mt-6 space-y-4 animate-in fade-in duration-300">
                                 {simulacroSubMode === 'none' ? (
                                     <div className="flex flex-col gap-4">
-                                        <button onClick={handleStartVoice} className="w-full bg-teal text-white font-fredoka py-4 text-lg rounded-xl shadow-sm hover:bg-teal/90 transition-smooth flex justify-center items-center gap-2">
+                                        <button onClick={handleStartVoice} className="w-full min-h-[44px] bg-teal text-white font-fredoka py-4 text-lg rounded-xl shadow-sm hover:bg-teal/90 transition-smooth flex justify-center items-center gap-2">
                                             🎤 Responder por voz
                                         </button>
-                                        <button onClick={() => setSimulacroSubMode('text')} className="w-full bg-white text-navy border-2 border-teal border-dashed font-fredoka py-4 text-lg rounded-xl hover:bg-teal/5 transition-smooth flex justify-center items-center gap-2">
+                                        <button onClick={() => setSimulacroSubMode('text')} className="w-full min-h-[44px] bg-white text-navy border-2 border-teal border-dashed font-fredoka py-4 text-lg rounded-xl hover:bg-teal/5 transition-smooth flex justify-center items-center gap-2">
                                             ⌨️ Responder por texto
                                         </button>
                                     </div>
                                 ) : (
                                     <div className="flex flex-col gap-4 animate-in slide-in-from-bottom-4 duration-300">
                                         {simulacroSubMode === 'voice' && (
-                                            <div className="flex items-center gap-2 text-teal font-fredoka mb-2">
-                                                <span className="relative flex h-3 w-3">
+                                            <div className="flex items-center gap-2 text-teal font-fredoka mb-2 text-sm sm:text-base">
+                                                <span className="relative flex h-3 w-3 flex-shrink-0">
                                                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal opacity-75"></span>
                                                   <span className="relative inline-flex rounded-full h-3 w-3 bg-teal"></span>
                                                 </span>
@@ -1755,9 +1748,9 @@
                                             value={transcript}
                                             onChange={(e) => setTranscript(e.target.value)}
                                             placeholder={simulacroSubMode === 'text' ? "Escribe tu respuesta aquí para estructurar tus ideas..." : "Tu voz aparecerá aquí..."}
-                                            className="w-full h-32 p-4 rounded-xl border border-teal/20 font-quicksand text-navy focus:outline-none focus:ring-2 focus:ring-teal/50 resize-none"
+                                            className="w-full h-32 p-4 rounded-xl border border-teal/20 font-quicksand text-navy focus:outline-none focus:ring-2 focus:ring-teal/50 resize-none break-words"
                                         />
-                                        <button onClick={handleSimulacroSubmit} className="w-full bg-gold text-white font-fredoka py-4 text-lg rounded-xl shadow-sm hover:bg-gold/90 transition-smooth">
+                                        <button onClick={handleSimulacroSubmit} className="w-full min-h-[44px] bg-gold text-white font-fredoka py-4 text-lg rounded-xl shadow-sm hover:bg-gold/90 transition-smooth">
                                             Ya respondí
                                         </button>
                                     </div>
@@ -1767,52 +1760,52 @@
 
                         {/* ESTADO 2: AUTOEVALUACIÓN */}
                         {simulacroStage === 'evaluating' && (
-                            <div className="mt-6 space-y-5 animate-in slide-in-from-bottom-4 duration-500">
+                            <div className="mt-6 space-y-5 animate-in slide-in-from-bottom-4 duration-500 overflow-y-auto hide-scrollbar max-h-[2500px]">
                                 <div className="bg-gold/10 p-4 rounded-2xl border border-gold/30">
-                                    <h4 className="font-fredoka text-navy flex items-center gap-2 mb-2"><span className="text-xl">💡</span> Ejemplo de respuesta modelo</h4>
+                                    <h4 className="font-fredoka text-navy flex items-center gap-2 mb-2"><span className="text-xl flex-shrink-0">💡</span> Ejemplo de respuesta modelo</h4>
                                     <p className="font-quicksand text-navy text-sm leading-relaxed">"{currentQuestion.ejemplo}"</p>
                                 </div>
 
                                 <div className="bg-teal/10 p-4 rounded-2xl border border-teal/30">
-                                    <h4 className="font-fredoka text-teal flex items-center gap-2 mb-2"><span className="text-xl">💬</span> Tu respuesta</h4>
+                                    <h4 className="font-fredoka text-teal flex items-center gap-2 mb-2"><span className="text-xl flex-shrink-0">💬</span> Tu respuesta</h4>
                                     <p className="font-quicksand text-navy text-sm leading-relaxed italic">"{transcript || 'No registraste ninguna respuesta.'}"</p>
                                 </div>
 
-                                <div className="bg-white p-5 rounded-2xl border border-teal/20 shadow-sm">
-                                    <h4 className="font-fredoka text-teal flex items-center gap-2 mb-3"><span className="text-xl">🧭</span> Checklist de Autoevaluación</h4>
+                                <div className="bg-white p-4 sm:p-5 rounded-2xl border border-teal/20 shadow-sm">
+                                    <h4 className="font-fredoka text-teal flex items-center gap-2 mb-3"><span className="text-xl flex-shrink-0">🧭</span> Checklist de Autoevaluación</h4>
                                     <p className="text-sm text-navy/70 mb-4 font-quicksand">Marca los pasos que lograste incluir en tu respuesta para calcular tu puntaje:</p>
                                     <div className="space-y-3">
                                         {currentQuestion.pasos.map((paso, idx) => (
-                                            <label key={idx} className="flex items-start gap-3 p-3 rounded-xl border border-cream hover:bg-cream/50 cursor-pointer transition-smooth">
+                                            <label key={idx} className="flex items-start gap-3 p-3 rounded-xl border border-cream hover:bg-cream/50 cursor-pointer transition-smooth min-h-[44px]">
                                                 <input
                                                     type="checkbox"
-                                                    className="mt-1 w-5 h-5 text-teal rounded border-teal/30 focus:ring-2 focus:ring-teal/50 accent-teal"
+                                                    className="mt-1 w-5 h-5 text-teal rounded border-teal/30 focus:ring-2 focus:ring-teal/50 accent-teal flex-shrink-0"
                                                     checked={checkedSteps.has(idx)}
                                                     onChange={() => toggleChecklistStep(idx)}
                                                 />
-                                                <span className="font-quicksand text-navy text-sm leading-relaxed">{paso}</span>
+                                                <span className="font-quicksand text-navy text-sm leading-relaxed flex-grow">{paso}</span>
                                             </label>
                                         ))}
                                     </div>
-                                    <div className={`mt-5 p-3 rounded-xl border-2 font-fredoka text-center text-xl transition-colors duration-300 ${scoreColor}`}>
+                                    <div className={`mt-5 p-3 rounded-xl border-2 font-fredoka text-center text-lg sm:text-xl transition-colors duration-300 break-words ${scoreColor}`}>
                                         Puntaje de autoevaluación: {score}%
                                     </div>
                                 </div>
 
                                 <div className="bg-red-50 p-4 rounded-2xl border border-red-200">
-                                    <h4 className="font-fredoka text-red-600 flex items-center gap-2 mb-2"><span className="text-xl">⚠️</span> Error común a evitar</h4>
+                                    <h4 className="font-fredoka text-red-600 flex items-center gap-2 mb-2"><span className="text-xl flex-shrink-0">⚠️</span> Error común a evitar</h4>
                                     <p className="font-quicksand text-red-800 text-sm leading-relaxed">{currentQuestion.errorComun}</p>
                                 </div>
                             </div>
                         )}
                     </div>
 
-                    {/* Botón Siguiente en Evaluación - REAJUSTE DE MARGEN PARA VISIBILIDAD COMPLETA */}
+                    {/* Botón Siguiente en Evaluación */}
                     {simulacroStage === 'evaluating' && (
                         <div className="mt-8 pb-4 flex justify-center">
-                            <button onClick={handleNextSimulacro} className="w-auto px-10 py-4 rounded-2xl font-fredoka text-xl bg-navy text-white shadow-md hover:bg-navy/90 transition-smooth flex justify-center items-center gap-2">
+                            <button onClick={handleNextSimulacro} className="w-auto min-h-[44px] px-6 sm:px-10 py-4 rounded-2xl font-fredoka text-lg sm:text-xl bg-navy text-white shadow-md hover:bg-navy/90 transition-smooth flex justify-center items-center gap-2">
                                 {currentIndex < currentList.length - 1 ? 'Siguiente pregunta' : 'Finalizar Simulacro'}
-                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path></svg>
+                                <svg className="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path></svg>
                             </button>
                         </div>
                     )}
@@ -1820,34 +1813,33 @@
             )};
 
             return (
-                // AJUSTE DE ALTURA PARA MÓVILES (h-[100dvh])
-                <div className="max-w-xl mx-auto h-[100dvh] sm:h-[850px] bg-cream flex flex-col shadow-2xl relative font-quicksand overflow-hidden sm:rounded-3xl sm:my-8 border-x border-teal/10">
+                <div className="max-w-xl mx-auto h-[100dvh] sm:h-[850px] bg-cream flex flex-col shadow-2xl relative font-quicksand overflow-hidden sm:rounded-3xl sm:my-8 border-x border-teal/10 break-words">
                     
                     {/* Header Píldora - Eureka */}
-                    <div className="bg-navy text-white text-center py-2 font-fredoka text-sm tracking-wide z-30 relative shadow-md">
+                    <div className="bg-navy text-white text-center py-2 px-2 font-fredoka text-xs sm:text-sm tracking-wide z-30 relative shadow-md">
                         ✨ Eureka - Tesis con Sandra
                     </div>
 
                     {/* Header Píldora de Navegación */}
                     {mode !== 'home' && (
-                        <div className="bg-white px-4 py-3 flex justify-between items-center shadow-sm z-20">
-                            <button onClick={goHome} className="text-teal font-bold flex items-center gap-1 hover:text-navy transition-smooth">
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path></svg>
-                                Inicio
+                        <div className="bg-white px-2 sm:px-4 py-2 sm:py-3 flex justify-between items-center shadow-sm z-20">
+                            <button onClick={goHome} className="text-teal font-bold flex items-center gap-1 hover:text-navy transition-smooth min-h-[44px] min-w-[44px] p-1">
+                                <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path></svg>
+                                <span className="text-sm sm:text-base">Inicio</span>
                             </button>
                             
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-2 sm:gap-3">
                                 {mode === 'study' ? (
                                     <>
-                                        <span className="font-fredoka text-navy text-sm bg-cream px-3 py-1 rounded-full border border-teal/20">
+                                        <span className="font-fredoka text-navy text-xs sm:text-sm bg-cream px-3 py-1.5 sm:py-1 rounded-full border border-teal/20 text-center">
                                             🏆 {understood.size} / {questions.length} Comprendidas
                                         </span>
-                                        <button onClick={resetProgress} className="text-red-400 hover:text-red-600 p-1" title="Reiniciar progreso">
-                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                                        <button onClick={resetProgress} className="text-red-400 hover:text-red-600 p-1 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-full" title="Reiniciar progreso">
+                                            <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
                                         </button>
                                     </>
                                 ) : (
-                                    <span className="font-fredoka text-navy text-sm bg-cream px-3 py-1 rounded-full border border-teal/20">
+                                    <span className="font-fredoka text-navy text-xs sm:text-sm bg-cream px-3 py-1.5 sm:py-1 rounded-full border border-teal/20 text-center">
                                         📊 {simulacroScores.length} practicadas | Promedio: {simulacroScores.length > 0 ? Math.round(simulacroScores.reduce((a,b)=>a+b,0)/simulacroScores.length) : 0}%
                                     </span>
                                 )}
@@ -1857,7 +1849,7 @@
 
                     {/* Progress Bar Header (Sólo en Estudio) */}
                     {mode === 'study' && (
-                        <div className="h-1.5 w-full bg-teal/10">
+                        <div className="h-1.5 w-full bg-teal/10 flex-shrink-0">
                             <div 
                                 className="h-full bg-gold transition-all duration-500 ease-out" 
                                 style={{ width: `${(understood.size / questions.length) * 100}%` }}
@@ -1865,7 +1857,7 @@
                         </div>
                     )}
 
-                    {/* Contenido Principal - REAJUSTE DE PADDING INFERIOR PARA QUE NADA TAPE EL BOTÓN */}
+                    {/* Contenido Principal */}
                     <div className="flex-grow overflow-y-auto hide-scrollbar pb-32">
                         {mode === 'home' && renderHome()}
                         {mode === 'study' && renderStudyMode()}
@@ -1873,7 +1865,7 @@
                     </div>
 
                     {/* Footer Fijo */}
-                    <footer className="absolute bottom-0 w-full bg-navy text-cream/70 text-xs py-3 text-center font-quicksand z-20 shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.1)]">
+                    <footer className="absolute bottom-0 w-full bg-navy text-cream/70 text-xs py-3 px-2 text-center font-quicksand z-20 shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.1)] break-words">
                         <p>CLARA es una creación de <strong>Eureka - Tesis con Sandra</strong> | Asegura una sustentación exitosa.</p>
                     </footer>
                 </div>
